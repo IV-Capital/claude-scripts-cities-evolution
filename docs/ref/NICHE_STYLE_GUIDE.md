@@ -155,20 +155,30 @@ More polished scripts with deeper historical research and narrative structure. H
 
 > Filled per video via `/setup-video`.
 
-**Working title:** {{VIDEO_TITLE}}
-**Topic:** {{VIDEO_TOPIC}}
-**Key thesis / insight:** {{KEY_INSIGHT}}
-**Target duration:** {{TARGET_DURATION}}
-**Target mood:** {{TARGET_MOOD}}
+**Working title:** Paris Part 1 -- From Lutetia to the Eve of Revolution
+**Topic:** The evolution of Paris from its Celtic and Roman origins as Lutetia through the medieval era, the Renaissance, and up to the brink of the French Revolution. How a small island settlement on the Seine grew into one of Europe's most powerful and culturally rich capitals -- through sieges, plagues, cathedral-building, royal ambition, and the slow accumulation of ideas that would eventually ignite revolution.
+**Key thesis / insight:** Paris's depth of history -- layer upon layer of destruction, reinvention, and progress -- is what makes it not just a beautiful city, but a living archive of Western civilization.
+**Target duration:** ~17 minutes
+**Target mood:** Positive and awe-inspiring -- a sense of wonder at how much history is packed into one city, building momentum era by era
 
 ### Must-Include Content Points
-{{MUST_INCLUDE}}
+- The origin of the name "Paris" (from the Parisii tribe) and the Lutetia settlement
+- Why this specific location on the Seine was chosen -- the island advantage (Ile de la Cite)
+- Roman Lutetia -- baths, arena, roads; what the Romans built and left behind
+- Major destructions and sieges (Viking raids, medieval conflicts) and how the city rebuilt each time
+- The building of Notre-Dame and what it represented for the city's identity
+- How technological and economic progress shaped the city -- trade, universities (the Sorbonne), guilds
+- The state of Paris by the late 18th century -- setting the stage for Part 2
 
 ### Must-Exclude
-{{MUST_EXCLUDE}}
+- Dry academic recitations of dates and kings without narrative context
+- The French Revolution itself (saved for Part 2)
+- Modern Paris / post-Revolution content
+- Political commentary or modern parallels
 
 ### Author Sources
-{{AUTHOR_SOURCES}}
+- Wikipedia (Paris history, Lutetia, Ile de la Cite, Notre-Dame de Paris, University of Paris)
+- Britannica (Paris, History of Paris, Parisii)
 
 ---
 
@@ -211,5 +221,5 @@ More polished scripts with deeper historical research and narrative structure. H
 - [x] File saved as `docs/ref/NICHE_STYLE_GUIDE.md`
 - [x] Tone examples (section 3) written
 - [x] Competitors (section 8) listed with URLs
-- [ ] Current video topic (section 9) filled -- run `/setup-video`
+- [x] Current video topic (section 9) filled -- Paris Part 1
 - [ ] Author sources provided or marked as "will be provided later"
