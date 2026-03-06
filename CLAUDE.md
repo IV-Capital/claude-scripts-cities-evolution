@@ -12,7 +12,6 @@ This repository is a collection of Claude Code skills, prompt templates, and ref
 - `docs/TEAM_LEAD_PROMPT.md` — Multi-agent Team Lead prompt for YouTube script production (~80KB, detailed orchestration protocol with Phase 5.5 cost estimation)
 - `docs/NICHE_STYLE_GUIDE_TEMPLATE.md` — Шаблон адаптации под конкретный канал и нишу (заполнить и сохранить как `docs/ref/NICHE_STYLE_GUIDE.md` в проекте скрипта)
 - `docs/ref/` — Reference documents required by Team Lead prompt (retention strategy, ElevenLabs guide, niche style guide)
-- `docs/specific/` — Supplementary reference documents (skill installation guide)
 
 ## Skills
 
