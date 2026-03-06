@@ -4,19 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository is a collection of Claude Code skills, prompt templates, and reference documentation for content production workflows — specifically YouTube script production with AI-generated video footage. There is no build system, package manager, or test suite — the project consists entirely of markdown files, shell scripts, and zip archives.
+This repository is a collection of Claude Code skills, prompt templates, and reference documentation for content production workflows — specifically YouTube script production with AI-generated video footage. There is no build system, package manager, or test suite — the project consists entirely of markdown files and shell scripts.
 
 ## Repository Structure
 
 - `.claude/skills/` — Installed Claude Code skills (each skill is a directory with `SKILL.md` as entrypoint)
-- `skills/` — Source zip archives of skills (originals before extraction)
 - `docs/TEAM_LEAD_PROMPT.md` — Multi-agent Team Lead prompt for YouTube script production (~80KB, detailed orchestration protocol with Phase 5.5 cost estimation)
 - `docs/NICHE_STYLE_GUIDE_TEMPLATE.md` — Шаблон адаптации под конкретный канал и нишу (заполнить и сохранить как `docs/ref/NICHE_STYLE_GUIDE.md` в проекте скрипта)
-- `docs/specific/` — Reference documents (video attention strategies, skill installation guide)
+- `docs/ref/` — Reference documents required by Team Lead prompt (retention strategy, ElevenLabs guide, niche style guide)
+- `docs/specific/` — Supplementary reference documents (skill installation guide)
 
 ## Skills
 
-Twelve project-level skills are configured in `.claude/skills/`:
+Thirteen project-level skills are configured in `.claude/skills/`:
 
 ### User-invocable skills
 
@@ -26,11 +26,12 @@ Twelve project-level skills are configured in `.claude/skills/`:
 | `content-research-writer` | `/content-research-writer` | (default) | Research and writing assistant |
 | `editor` | `/editor` | (default) | Professional editing and proofreading |
 | `video-analyzer` | `/video-analyzer <video_path>` | Bash (ffmpeg) | Analyze video by extracting frames |
-| `video-report` | `/video-report` | (default) | Generate video reports |
 | `youtube-transcript` | `/youtube-transcript <url>` | Bash, Read, Write | Download YouTube transcripts |
 | `sora-2-pro-prompting` | `/sora-2-pro-prompting` | Read | Sora 2 Pro video generation prompts |
 | `kling-video-prompting` | `/kling-video-prompting` | Read | Kling AI video generation prompts |
 | `google-flow-prompting` | `/google-flow-prompting` | Read | Google Flow (Veo 3.1) video generation prompts |
+| `setup-channel` | `/setup-channel` | AskUserQuestion, Write | Interactive fork setup — channel profile (sections 1-8, 10) |
+| `setup-video` | `/setup-video` | AskUserQuestion, Edit | Fill video topic (section 9) before each new script |
 
 ### Background knowledge skills (non-invocable)
 
@@ -56,9 +57,24 @@ This project works exclusively with three AI video generation services:
 
 No other video generation services (Runway, Hailuo, Midjourney, Flux, etc.) are used.
 
+## Hooks
+
+A `SessionStart` hook (`.claude/hooks/session-start.sh`) runs automatically at session start with three modes:
+
+1. **FORK_SETUP_NEEDED** — `docs/ref/NICHE_STYLE_GUIDE.md` not found. Suggests `/setup-channel`.
+2. **VIDEO_SETUP_NEEDED** — Guide exists but section 9 has `{{...}}` placeholders. Suggests `/setup-video`.
+3. **PRICING_CHECK** — Everything configured. Triggers WebSearch to verify AI service pricing is up to date.
+
+## Fork Workflow
+
+1. Fork this repository
+2. `/setup-channel` — interactive channel profile setup (sections 1-8, 10)
+3. `/setup-video` — fill video topic and parameters (section 9) before each new script
+4. Run Team Lead prompt for script production
+
 ## Permissions
 
-Git write operations are denied in `.claude/settings.local.json` — all git commands that modify state (commit, push, checkout, merge, etc.) are blocked. Read-only git commands (status, log, diff) are allowed. File read/write/edit is scoped to this project directory only.
+`.claude/settings.json` runs in `bypassPermissions` mode with sandbox enabled. Bash is auto-allowed when sandboxed. Hooks, permissions, and sandbox config are all in this single file (no `settings.local.json`).
 
 ## Language
 
