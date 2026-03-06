@@ -28,9 +28,15 @@ all downstream decisions.
 | 1 | **Audience Retention Strategy** (`docs/ref/RETENTION_STRATEGY.md`) | Psychological hooks, pattern interrupts, narrative transportation, Zeigarnik effect, Shepard Tone, J/L-cuts — the theoretical backbone of every scripting decision | Read in full; retain all 11 techniques as validation criteria |
 | 2 | **ElevenLabs v3 Prompting Guide** (`docs/ref/ELEVENLABS_V3_GUIDE.md`) | Audio tags syntax (`[laughs]`, `[whispers]`, `[sarcastic]`), stability slider semantics, punctuation effects on delivery, multi-speaker dialogue patterns | Read in full; retain tag inventory and best practices for voice-director |
 | 3 | **Niche Style Guide** (`docs/ref/NICHE_STYLE_GUIDE.md`) | Channel-specific tone, vocabulary constraints, brand colors, target audience profile template, prohibited phrases | Read in full; this document is provided by the human operator and defines the creative envelope |
-| 4 | **Content Research Writer Skill** (`/mnt/skills/user/content-research-writer/SKILL.md`) | Best practices for iterative research → outline → draft → feedback loops, citation management, hook improvement methodology | Read and extract workflow patterns for researcher and editor roles |
-| 5 | **Editor Skill** (`/mnt/skills/user/editor/SKILL.md`) | Four editing levels (proofreading → copy → line → developmental), editing checklists, common issues taxonomy | Read and extract validation criteria for proofreader and editor roles |
-| 6 | **YouTube Transcript Skill** (`/mnt/skills/user/youtube-transcript/SKILL.md`) | Technical workflow for downloading and cleaning competitor transcripts via yt-dlp | Read and extract operational procedures for competitor-analyst |
+| 4 | **Content Research Writer Skill** (`.claude/skills/content-research-writer/SKILL.md`) | Best practices for iterative research → outline → draft → feedback loops, citation management, hook improvement methodology | Read and extract workflow patterns for researcher and editor roles |
+| 5 | **Editor Skill** (`.claude/skills/editor/SKILL.md`) | Four editing levels (proofreading → copy → line → developmental), editing checklists, common issues taxonomy | Read and extract validation criteria for proofreader and editor roles |
+| 6 | **YouTube Transcript Skill** (`.claude/skills/youtube-transcript/SKILL.md`) | Technical workflow for downloading and cleaning competitor transcripts via yt-dlp | Read and extract operational procedures for competitor-analyst |
+| 7 | **Sora 2 Pro Prompting Skill** (`.claude/skills/sora-2-pro-prompting/SKILL.md`) | Prompt architecture, cost tables, style keywords for Sora 2 Pro | Read in full + references; primary guide for Sora prompts |
+| 8 | **Kling Video Prompting Skill** (`.claude/skills/kling-video-prompting/SKILL.md`) | Prompt formula, camera reference, credit costs for Kling AI | Read in full + references; primary guide for Kling prompts |
+| 9 | **Google Flow Prompting Skill** (`.claude/skills/google-flow-prompting/SKILL.md`) | Prompt formula, Ultra pricing, community insights for Google Flow/Veo | Read in full + references; primary guide for Flow prompts |
+| 10 | **Video Gen Prompts** (`.claude/skills/video-gen-prompts/SKILL.md`) | Cross-service comparison, prompt adaptation guide Sora/Kling/Flow | Read in full; use as meta-reference when adapting prompts across services |
+| 11 | **AI Service Selector** (`.claude/skills/ai-service-selector/SKILL.md`) | Decision matrix for choosing Sora 2 / Kling / Flow per scene | Read in full; use for model selection in VISUAL_PROMPTS_PLAN |
+| 12 | **Production Cost Estimator** (`.claude/skills/production-cost-estimator/SKILL.md`) | Pricing tables and cost calculation methodology | Read after Phase 5; use for COST_ESTIMATE.md |
 
 ### 0.2 External Best Practices Search
 
@@ -38,7 +44,7 @@ Using `web_search`, research and retain current best practices for:
 
 | # | Topic | Search queries (suggested) |
 |---|-------|---------------------------|
-| 1 | AI video generation prompting | `"best practices prompting Sora 2" OR "Kling video prompts" OR "Flow AI video"` |
+| 1 | AI video generation prompting | `"best practices prompting Sora 2" OR "Kling 2.0 3.0 video prompts" OR "Flow AI video"` |
 | 2 | YouTube script structure | `"YouTube script structure retention" site:vidiq.com OR site:tubebuddy.com` |
 | 3 | Retention curve optimization | `"YouTube retention curve" "audience retention graph" best practices 2025` |
 | 4 | Cinematographic transitions in AI video | `"cinematic transitions" "AI generated footage" editing montage` |
@@ -48,7 +54,7 @@ Using `web_search`, research and retain current best practices for:
 After all reads and searches, produce `KNOWLEDGE_SUMMARY.md` containing:
 - Condensed retention technique inventory (from Retention Strategy doc)
 - ElevenLabs v3 tag reference card (categorized: voice, SFX, experimental)
-- AI video generation prompt patterns per model (Sora 2, Kling, Flow)
+- AI video generation prompt patterns per model (Sora 2, Kling, Flow) — cross-referenced with sora-2-pro-prompting, kling-video-prompting, google-flow-prompting skills
 - Cinematographic shot type reference (wide/medium/close-up/extreme close-up + movement: pan, tilt, dolly, crane, handheld)
 - Transition vocabulary (match cut, J-cut, L-cut, jump cut, whip pan, dissolve, smash cut)
 - Retention curve benchmark patterns extracted from competitor analysis
@@ -138,7 +144,8 @@ VIDEO_SCRIPT_[TITLE]/
 │   │   ├── scene_02_prompt.md
 │   │   └── ...
 │   └── stock_references/            ← URLs/descriptions of free stock footage/images
-└── TELEPROMPTER.md                  ← Clean narration-only text for voiceover recording
+├── TELEPROMPTER.md                  ← Clean narration-only text for voiceover recording
+└── COST_ESTIMATE.md                 ← Production cost breakdown (Phase 5.5)
 ```
 
 ### 1.4 Script Section Anatomy
@@ -223,7 +230,7 @@ claude --model opus --extended-context
 **Role:** Source Material Researcher
 **Model:** `claude-opus-4-6` · Default context (200K tokens)
 **Expertise:** Web research, source evaluation, information synthesis, citation management, fact extraction
-**Skill foundation:** `content-research-writer` skill methodology
+**Skill foundation:** `content-research-writer` skill methodology, `article-extractor` skill for extracting articles
 
 **System Instructions:**
 
@@ -240,6 +247,8 @@ A) READ the lead's KNOWLEDGE_SUMMARY.md for shared vocabulary and context.
 B) READ the NICHE_STYLE_GUIDE.md to understand audience level and content constraints.
 C) READ the content-research-writer skill (/mnt/skills/user/content-research-writer/SKILL.md)
    to internalize the iterative research methodology.
+C2) READ the article-extractor skill (.claude/skills/article-extractor/SKILL.md)
+    to internalize URL-to-text extraction workflow.
 
 D) PRODUCE a Research Plan and send it to @lead for approval.
    Do NOT begin research until the lead explicitly approves the plan.
@@ -321,12 +330,14 @@ Before downloading any transcripts or analyzing any videos, you MUST:
 
 A) READ the lead's KNOWLEDGE_SUMMARY.md for shared vocabulary.
 B) READ the NICHE_STYLE_GUIDE.md to understand the competitive landscape.
-C) READ the youtube-transcript skill (/mnt/skills/user/youtube-transcript/SKILL.md)
+C) READ the youtube-transcript skill (.claude/skills/youtube-transcript/SKILL.md)
    to internalize transcript extraction procedures.
-D) READ the Audience Retention Strategy (docs/ref/RETENTION_STRATEGY.md)
+D) READ the video-analyzer skill (.claude/skills/video-analyzer/SKILL.md)
+   to internalize frame extraction for visual analysis of competitor videos.
+E) READ the Audience Retention Strategy (docs/ref/RETENTION_STRATEGY.md)
    to have a taxonomy for classifying hooks and retention devices.
 
-E) PRODUCE a Competitor Analysis Plan and send it to @lead for approval.
+F) PRODUCE a Competitor Analysis Plan and send it to @lead for approval.
    Do NOT begin analysis until the lead explicitly approves the plan.
 
 The plan must include:
@@ -514,7 +525,7 @@ Deliver only strategic design documents.
 **Role:** Visual Prompt Engineer & Montage Architect
 **Model:** `claude-opus-4-6` · Default context (200K tokens)
 **Expertise:** AI video/image generation prompting (Sora 2, Kling, Flow), cinematographic language, shot composition, color theory, visual continuity, transition design
-**Skill foundation:** Phase 0 external research on AI video generation best practices
+**Skill foundation:** `sora-2-pro-prompting` skill, `kling-video-prompting` skill, `google-flow-prompting` skill, `video-gen-prompts` skill (cross-service comparison), `ai-service-selector` skill (model selection matrix)
 
 **System Instructions:**
 
@@ -534,16 +545,42 @@ B) READ the NICHE_STYLE_GUIDE.md for visual aesthetic constraints (color
    palette, mood board, style references).
 C) READ the marketer's RETENTION_ARCHITECTURE.md for emotional arc and
    pattern interrupt schedule — your visual choices must serve these.
+D) READ the sora-2-pro-prompting skill (.claude/skills/sora-2-pro-prompting/SKILL.md)
+   and its references/ — primary technical reference for Sora 2 prompt syntax.
+E) READ the kling-video-prompting skill (.claude/skills/kling-video-prompting/SKILL.md)
+   and its references/ — primary technical reference for Kling prompt syntax.
+   CRITICAL: Kling reverses pan/tilt terminology vs standard cinematography.
+F) READ the google-flow-prompting skill (.claude/skills/google-flow-prompting/SKILL.md)
+   and its references/ — primary technical reference for Flow/Veo prompt syntax.
+G) READ the video-gen-prompts skill (.claude/skills/video-gen-prompts/SKILL.md)
+   — cross-service comparison and prompt adaptation guide.
+H) READ the ai-service-selector skill (.claude/skills/ai-service-selector/SKILL.md)
+   — decision matrix for per-scene model selection.
 
-D) PRODUCE a Visual Prompts Plan and send it to @lead for approval.
+I) PRODUCE a Visual Prompts Plan and send it to @lead for approval.
    Do NOT write any prompts until the lead explicitly approves the plan.
 
 The plan must include:
-1. MODEL SELECTION STRATEGY: Criteria for choosing between Sora 2, Kling,
-   Flow, stock footage, and static images. General guidelines:
-   - Sora 2: Complex scenes with humans, nuanced motion, cinematic quality
-   - Kling: Fast iterations, stylized content, motion-heavy abstract visuals
-   - Flow: Short clips, atmospheric backgrounds, texture-heavy aesthetics
+1. MODEL SELECTION STRATEGY: Apply the decision matrix from ai-service-selector
+   skill for each scene. The matrix evaluates: scene timestamp (first 3 min vs rest),
+   scene complexity, human presence, motion type, duration, budget priority.
+   Cross-reference with NICHE_STYLE_GUIDE.md Section 10 for operator's preferred models.
+
+   TEMPORAL QUALITY RULE ("Premium Start"):
+   - Scenes in the FIRST ~3 MINUTES (hook, intro, context): use PREMIUM models only
+     (Sora 2 Quality, Kling Professional, Flow Veo 3.1 Quality). This is the peak
+     viewer drop-off zone — visual quality directly impacts retention.
+   - Scenes AFTER ~3 MINUTES: transition to ECONOMY models. Default preference:
+     Flow Veo 3.1 Fast (FREE on Google AI Ultra subscription) > Kling Standard >
+     Flow Veo 2 Fast (10 credits). Reserve Sora 2 Quality only for hero scenes
+     with human subjects after the 3-minute mark.
+   - Rationale: viewers who pass the 3-minute mark are already engaged;
+     a modest quality ceiling reduction is acceptable for budget optimization.
+
+   Per-service guidelines:
+   - Sora 2: Complex scenes with humans, nuanced motion, cinematic quality (see sora-2-pro-prompting skill)
+   - Kling: Stylized content, motion-heavy camera work, abstract visuals (see kling-video-prompting skill)
+   - Flow: Atmospheric backgrounds, establishing shots, volume B-roll; Veo 3.1 Fast is FREE on Ultra — preferred default for economy tier (see google-flow-prompting skill)
    - Stock footage: When photorealism is critical and AI artifacts unacceptable
    - Static image: For overlays, diagrams, infographics, text cards
 2. VISUAL CONTINUITY PLAN: How aesthetic coherence will be maintained across
@@ -581,7 +618,7 @@ YOUR DELIVERABLES:
    # Scene {NN}: {Title}
 
    ## Generation Parameters
-   - **Model:** {Sora 2 / Kling / Flow}
+   - **Model:** {Sora 2 / Kling / Flow / Stock footage / Static image}
    - **Type:** {Video / Image}
    - **Duration:** {8-10}s
    - **Aspect ratio:** {16:9 / 9:16 / 1:1}
@@ -591,6 +628,11 @@ YOUR DELIVERABLES:
    "{Detailed natural language prompt including: subject, action, environment,
    lighting, color palette, camera angle, camera movement, mood, style reference,
    negative prompt elements to avoid}"
+
+   ## Service-Adapted Prompt
+   "{Prompt adapted to selected model's optimal syntax per corresponding
+   prompting skill (sora-2-pro-prompting / kling-video-prompting /
+   google-flow-prompting). Includes service-specific parameters and keywords.}"
 
    ## Shot Specification
    - **Type:** {Wide / Medium / Close-up / Extreme CU}
@@ -666,7 +708,7 @@ Before performing any checks, you MUST:
 
 A) READ the lead's KNOWLEDGE_SUMMARY.md for reference vocabulary.
 B) READ the NICHE_STYLE_GUIDE.md for style constraints and prohibited content.
-C) READ the editor skill (/mnt/skills/user/editor/SKILL.md) to internalize
+C) READ the editor skill (.claude/skills/editor/SKILL.md) to internalize
    the proofreading and copy editing checklists.
 D) READ the ElevenLabs v3 guide (docs/ref/ELEVENLABS_V3_GUIDE.md)
    for valid audio tag syntax.
@@ -724,7 +766,9 @@ C) TECHNICAL CORRECTNESS:
      * Tags are placed contextually (not mid-word)
      * No deprecated or invented tags
    - Visual prompt completeness (all required fields present)
-   - AI model selection is appropriate for the scene's requirements
+   - AI model selection is appropriate per ai-service-selector decision matrix
+   - Visual prompts follow service-specific syntax from corresponding prompting skill
+     (sora-2-pro-prompting / kling-video-prompting / google-flow-prompting)
    - Transition pairs are consistent across scene boundaries
    - Shot diversity rule is respected (no identical consecutive shots)
    - Footage duration within 8-10 second range
@@ -800,7 +844,7 @@ Before writing any script text, you MUST:
 
 A) READ the lead's KNOWLEDGE_SUMMARY.md for shared vocabulary.
 B) READ the NICHE_STYLE_GUIDE.md for voice and tone constraints.
-C) READ the editor skill (/mnt/skills/user/editor/SKILL.md) for
+C) READ the editor skill (.claude/skills/editor/SKILL.md) for
    editing methodology — especially developmental and line editing levels.
 D) READ the content-research-writer skill for section feedback methodology.
 E) READ the Audience Retention Strategy doc for narrative techniques.
@@ -1171,6 +1215,19 @@ modifications.
 - [ ] T5.5: editor generates TELEPROMPTER.md (clean narration with audio tags only)
 - [ ] T5.6: editor performs final integration pass (structural coherence)
 
+### Phase 5.5: Cost Estimation
+**Owner:** Lead
+**Dependencies:** Phase 5 (integrated script with all model selections finalized)
+**Tasks:**
+- [ ] T5.5.1: Parse SCRIPT.md — extract per-scene model, duration, resolution
+- [ ] T5.5.2: Parse TELEPROMPTER.md — count narration characters (excluding [audio tags])
+- [ ] T5.5.3: Apply production-cost-estimator skill methodology to calculate costs
+  (reference pricing from sora-2-pro-prompting, kling-video-prompting,
+  google-flow-prompting skills' cost reference files)
+- [ ] T5.5.4: Produce COST_ESTIMATE.md in project root with per-scene breakdown, ElevenLabs cost,
+  re-generation buffer (25%), total estimate, and budget optimization suggestions
+- [ ] T5.5.5: Commit COST_ESTIMATE.md to dev
+
 ### Phase 6: Final Validation
 **Owner:** proofreader + marketer (parallel)
 **Dependencies:** Phase 5 (integrated script complete)
@@ -1194,6 +1251,7 @@ Review:
 - Full SCRIPT.md (skim for overall quality)
 - TELEPROMPTER.md (read aloud test)
 - Sample visual prompts for final aesthetic check
+- COST_ESTIMATE.md — verify budget is acceptable, approve or request optimization
 If all checks pass: merge `dev` → `main`. Script is production-ready.
 
 ---
@@ -1369,6 +1427,7 @@ for administrative commits only: plan documents (Phase 0.5), `KNOWLEDGE_SUMMARY.
 | G8 | Integrated SCRIPT.md has all layers, no missing sections, no broken references | proofreader (consolidated) |
 | G9 | Retention curve compliance verified against target shape | marketer |
 | G10 | TELEPROMPTER.md matches SCRIPT.md narration exactly | proofreader |
+| G10.5 | Production cost estimate within acceptable budget | Lead + Human (HC5) |
 | G11 | Final acceptance: all reports pass, human reads TELEPROMPTER.md aloud, aesthetic check | Human (HC5) |
 
 ---
